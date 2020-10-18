@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+<!-- Use the HTML and CSS you developed in module 01 to fill out this template.-->
+
+<head>
+  <meta charset=utf-8 />
+  <title>Interesting Sites in NOLA</title>
+
+  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+  <link rel='icon' href='https://newmapsplus.github.io/favicon.ico' type='image/x-icon' />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Lato&family=Open+Sans&display=swap" rel="stylesheet">
+  <!-- **************************************************************** -->
+  <!-- Check to make this links to the most current version of Leaflet! -->
+  <!-- **************************************************************** -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+  <!-- **************************************************************** -->
+
+  <style>
+    /* The map element */
+    #map {
+      width: 100%;
+      height: 500px;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: #9b9a9a;
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 300;
+      color: #202020;
+      font-size: 100%;
+    }
+
+    header,
+    section,
+    footer {
+      width: 80%;
+      margin: 10px auto;
+    }
+
+    h1,h2,p {
+      font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      font-weight: 900;
+      letter-spacing: .04em;
+      text-decoration: underline;
+      text-align: center;
+    }
+
+    h2 {
+      font-size: 2em;
+      font-weight: 500;
+
+      letter-spacing: .04em;
+    }
+
+    p {
+      font-size: 1.1em;
+      line-height: 1.5em;
+      font-weight: 100;
+      
+    }
+
+    a {
+      color: #0012b8;
+      font-weight: normal;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    ul {
+      padding-left: 20px;
+      font-family: cursive;
+    }
+
+    li {
+      margin: 10px 0;
+    }
+
+    hr {
+      margin: 20px 0;
+      border: 0;
+      height: 1px;
+      background: #d3d3d3;
+    }
+
+    .caption {
+      margin: 0 0 20px 0;
+      display: block;
+    }
+
+    #map {
+      width: 100%;
+      height: 540px;
+      margin: 10px auto;
+      border: 4px solid #1f1f1f;
+    }
+
+    .highlight {
+      color: #1a6602;
+      font-weight: bold;
+    }
+
+    .img-fill {
+      width: 100%;
+      height: auto;
+      margin: 10px 0;
+    }
+
+    /* Change opacity on hover over the icon class */
+
+    .icon:hover {
+      opacity: .8;
+    }
+
+    /* Modify Leaflet's default popup style */
+
+    .leaflet-popup-content h3 {
+      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+      font-size: 1.3em;
+      margin-bottom: 6px;
+      text-align: center;
+    }
+
+    .leaflet-popup-content p {
+      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+      margin: 2px 0 4px;
+      font-size: 1.3em;
+      text-align: center;
+    }
+
+    .leaflet-popup-content a {
+      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+      font-weight: normal;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>Places of interest (POI) in New Orleans, LA </h1>
+  </header>
+
+  <section>
+    <div id='map'></div>
+  </section>
+
+  <section>
+
+    <p><a href="https://www.neworleans.com/">New Orleans</a> is one of the most vibrant, colorful cities in the world.
+      It is home to the <a href="https://www.neworleans.com/">New Orleans Saints</a> and the NOLA Pelicans. It is also the center of
+      Cajun cuisine and boasts traditional french-creole restaurants throughout the city. It is considered
+      a destination for everything entertainment, with it's motto being "Laissez les bon temps rouler". In New Orleans, they certainly let the good times roll.
+    </p>
+
+  </section>
+  <footer>
+    <p>Map authored by Will Childers for the University of Kentucky MAP 672</p>
+    <hr>
+
+    <a href="https://newmapsplus.github.io">
+      <img src="https://newmapsplus.github.io/assets/graphics/logo-2018-nmp-75px-h-gray.png"
+        alt="University of Kentucky Geography">
+    </a>
+
+    <a href="https://uky-gis.github.io">
+      <img src="https://newmapsplus.github.io/assets/graphics/logo-2018-geography-75px-h.png"
+        alt="University of Kentucky Geography">
+    </a>
+  </footer>
+  <!-- **************************************************************** -->
+  <!-- Check to make this links to the most current version of Leaflet! -->
+  <!-- **************************************************************** -->
+  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+  <!-- **************************************************************** -->
+  <script>
+    var map = L.map('map', {
+      center: [29.9584, -90.0619],
+      zoom: 14
+    });
+
+    // Get basemap URL from Leaflet Providers
+    var basemap_url = 'http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png'
+
+    // Get basemap attributes from Leaflet Providers
+    var basemap_attributes = {
+      maxZoom: 18,
+      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    };
+    // requests some map tiles
+    var tiles = L.tileLayer(basemap_url, basemap_attributes);
+
+    map.addLayer(tiles);
+
+    // Begin writing/modifying code for Lab 05 here
+
+    var hotspots = [{
+        name: "Mariza",
+        properties: {
+          description: "Italian-inspired fare dished out in an airy loft building with an industrial-chic vibe",
+          coordinates: [29.9629337, -90.0501008],
+          url: 'http://marizaneworleans.com/',
+          phone: '(504) 598-5700',
+          icon: 'svgs/restaurant-15.svg'
+        }
+      },
+      {
+        name: "Napoleon House",
+        properties: {
+          description: "Few places capture the essence of New Orleans like the Napoleon House: A 200 year old landmark that's as casual and unique as its French Quarter surroundings.",
+          coordinates: [29.9559, -90.0651],
+          url: 'https://www.napoleonhouse.com/',
+          phone: '(504) 524-9752',
+          icon: 'svgs/restaurant-15.svg'
+        }
+      },
+      {
+        name: "Napoleon House",
+        properties: {
+          description: "Located at 701 N. Rampart Street on the edge of the French Quarter, the park is dedicated to one of the City’s most celebrated native sons and to the tradition of jazz in the City.  The park is located in the Tremé neighborhood, birthplace of many of New Orleans' most famous jazz musicians.",
+          coordinates: [29.9628, -90.0678],
+          url: 'https://www.nola.gov/parks-and-parkways/parks-squares/congo-square-louis-armstrong-park/',
+          phone: '(504) 658-3200',
+          icon: 'svgs/park-15.svg'
+        }
+      },
+      {
+        name: "Sazerac House",
+        properties: {
+          description: "The Sazerac House is a six-story building, featuring three exhibit floors complete with Peychaud's bitters and Sazerac Rye production as well as a rum-aging room, a floor with dedicated event space, and two floors of offices for the Sazerac Company.",
+          coordinates: [29.9519, -90.0675],
+          url: 'https://www.sazerachouse.com/',
+          phone: '(866) 729-3722',
+          icon: 'svgs/bar-15.svg'
+        }
+      },
+
+    ];
+    // console.log(hotspots[0]);
+    // console.log(hotspots[0].name);
+    // console.log(hotspots[0].properties.description); // Object { ... }
+    // console.log(hotspots[0].properties.url);
+    // console.log(hotspots[0].properties.phone);
+
+    // variable to reference the zero index
+    // var i = 0;
+    // var props = hotspots[i].properties;
+    // console.log(props.description);
+    // assign a string, wrapping the name of the place within two HTML bold tags
+    console.log(hotspots);
+    for (var i = 0; i < hotspots.length; i++) {
+      var props = hotspots[i].properties;
+      console.log(props);
+      var popup = `<h3>${hotspots[i].name}</h3>
+             <p>${props.description}</p>
+             <p><b>Website</b>: <a href='${props.url}'>${props.url}</a></p>
+             <p><b>Phone</b>: ${props.phone}</p>
+             `
+
+      var icon = L.icon({
+        iconUrl: props.icon,
+        iconSize: [40, 40],
+        popupAnchor: [0, -22],
+        className: "icon"
+      });
+      var marker = L.marker(props.coordinates, {
+          icon: icon
+        })
+        .addTo(map)
+        .bindPopup(popup);
+
+      marker.on("mouseover", function () {
+        this.openPopup();
+        marker.on("mouseout", function () {
+          this.closePopup();
+        });
+      });
+    }
+  </script>
+
+</body>
+
+</html>
